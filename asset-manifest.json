@@ -1,13 +1,22 @@
 {
   "files": {
-    "main.css": "/React/static/css/main.b3f34ae2.css",
-    "main.js": "/React/static/js/main.24320324.js",
+    "main.css": "/React/static/css/main.672d1228.css",
+    "main.js": "/React/static/js/main.362c105e.js",
+    "static/media/onion.png": "/React/static/media/onion.6f9e7a942faee28bbbc6.png",
+    "static/media/pickle.png": "/React/static/media/pickle.831ef382cda5e5130b52.png",
+    "static/media/bacon.png": "/React/static/media/bacon.d0c5224dc8e3646adb92.png",
+    "static/media/tomato.png": "/React/static/media/tomato.80451d553522151f3de9.png",
+    "static/media/meat.png": "/React/static/media/meat.afa6e449acf92bf6943d.png",
+    "static/media/salad.png": "/React/static/media/salad.296a7e4a808c973a3fc2.png",
+    "static/media/cheese.png": "/React/static/media/cheese.959a1df7b2a5e82e9a0c.png",
+    "static/media/bottom_bun.png": "/React/static/media/bottom_bun.f19ba0044d78fa8d7057.png",
+    "static/media/top_bun.png": "/React/static/media/top_bun.5d6f28bb7fb22d4e260e.png",
     "index.html": "/React/index.html",
-    "main.b3f34ae2.css.map": "/React/static/css/main.b3f34ae2.css.map",
-    "main.24320324.js.map": "/React/static/js/main.24320324.js.map"
+    "main.672d1228.css.map": "/React/static/css/main.672d1228.css.map",
+    "main.362c105e.js.map": "/React/static/js/main.362c105e.js.map"
   },
   "entrypoints": [
-    "static/css/main.b3f34ae2.css",
-    "static/js/main.24320324.js"
+    "static/css/main.672d1228.css",
+    "static/js/main.362c105e.js"
   ]
 }
