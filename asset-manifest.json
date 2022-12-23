@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/React/static/css/main.672d1228.css",
-    "main.js": "/React/static/js/main.362c105e.js",
+    "main.css": "/React/static/css/main.23326bfe.css",
+    "main.js": "/React/static/js/main.def50a11.js",
     "static/media/onion.png": "/React/static/media/onion.6f9e7a942faee28bbbc6.png",
     "static/media/pickle.png": "/React/static/media/pickle.831ef382cda5e5130b52.png",
     "static/media/bacon.png": "/React/static/media/bacon.d0c5224dc8e3646adb92.png",
@@ -12,11 +12,11 @@
     "static/media/bottom_bun.png": "/React/static/media/bottom_bun.f19ba0044d78fa8d7057.png",
     "static/media/top_bun.png": "/React/static/media/top_bun.5d6f28bb7fb22d4e260e.png",
     "index.html": "/React/index.html",
-    "main.672d1228.css.map": "/React/static/css/main.672d1228.css.map",
-    "main.362c105e.js.map": "/React/static/js/main.362c105e.js.map"
+    "main.23326bfe.css.map": "/React/static/css/main.23326bfe.css.map",
+    "main.def50a11.js.map": "/React/static/js/main.def50a11.js.map"
   },
   "entrypoints": [
-    "static/css/main.672d1228.css",
-    "static/js/main.362c105e.js"
+    "static/css/main.23326bfe.css",
+    "static/js/main.def50a11.js"
   ]
 }
