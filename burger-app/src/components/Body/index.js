@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Burger from "./Burger/burger";
 import Price from "./Price/price";
 import Controls from "./Controls/controls";
-import ModalWindow from "../OtherComponents/ModalWinrow/modalWindow";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -13,7 +12,6 @@ const Body = () => {
   const [ingredientAddingOrder, setIngredientAddingOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const [orderPrice, setOrderPrice] = useState("1.00");
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     // turn on Loader
@@ -109,9 +107,6 @@ const Body = () => {
     }
   };
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
     <MainSection>
       <div className="container">
@@ -120,6 +115,7 @@ const Body = () => {
           <Burger
             ingredientAddingOrder={ingredientAddingOrder}
             orderPrice={orderPrice}
+            clearAll={clearAll}
           />
           <Controls
             ingredients={ingredients}
@@ -127,12 +123,6 @@ const Body = () => {
             updateBurger={handleChangeBurgerIngredientQuantity}
             loading={loading}
             clearAll={clearAll}
-          />
-          <ModalWindow
-            ingredients={ingredients}
-            quantities={burgerCreator}
-            totalPrice={orderPrice}
-            clearBurger={clearAll}
           />
         </MainWrapper>
       </div>

@@ -1,33 +1,34 @@
 import styled from "styled-components";
-import Image from "../Images/images";
+
 import { useState } from "react";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+
+import { CircularProgress } from "@mui/material";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { validationRules } from "../../../utils/Validation/validations";
 import { SignupSchema } from "../../../utils/Validation/validationSchema";
 import { createOrder } from "../../../utils/Api/apiCall";
-import { Button, Stack } from "@mui/material";
-import Loader from "../Loader/loader";
+import Image from "../../OtherComponents/Images/images";
 
-const style = {
-  backgroundColor: "Black",
-  display: "flex",
-  justifyContent: "center",
-  width: "160px",
-  height: "50px",
-};
-
-const OrderDetails = ({ quantities, totalPrice, clearBurger }) => {
+const OrderDetails = ({
+  isOpen,
+  orderPrice,
+  clearAll,
+  copyOrderIngredient,
+  handleClose,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
   const [orderCreateStatus, setOrderCreateStatus] = useState(false);
-  const [errorStatus, setErrorStatus] = useState(false);
 
-  const burgerComponents = Object.entries(quantities).filter((el) => el[1]);
+  const burgerIngredients = Object.entries(orderPrice).filter(
+    (product) => product[1] > 0
+  );
 
-  const orderWindowClesed = () => {
-    setErrorStatus(false);
-    setOrderCreateStatus(false);
-  };
   const handleOrder = async (data) => {
     const {
       name: orderName,
@@ -37,180 +38,171 @@ const OrderDetails = ({ quantities, totalPrice, clearBurger }) => {
     } = data;
     const orderData = {
       orderName,
-      orderPhone: orderPhone,
-      orderEmail: orderEmail,
-      orderFast: checked,
-      orderAddress: orderAddress,
-      orderProducts: Object.fromEntries(burgerComponents),
-      orderPrice: totalPrice,
+      orderPhone,
+      orderEmail,
+      orderAddress,
+      orderProducts: Object.fromEntries(burgerIngredients),
+      orderPrice,
     };
 
     try {
       setLoading(true);
       await createOrder(orderData);
-      console.log(orderData);
-      setOrderCreateStatus(true);
-      clearBurger();
-      setErrorStatus(false);
       setLoading(false);
+      setOrderCreateStatus(true);
+      clearAll();
     } catch (error) {
-      setErrorStatus(true);
       setLoading(false);
       console.error(error);
       setOrderCreateStatus(false);
+      clearAll();
     }
   };
 
   return (
-    <WrapperStyled>
-      {orderCreateStatus ? (
-        <>
-          {loading ? (
-            <Loader />
-          ) : (
-            <StatusBox>
-              <TittleStyled>Order success!</TittleStyled>
-              <Button onClick={orderWindowClesed} style={style}>
-                Ok
-              </Button>
-            </StatusBox>
-          )}
-        </>
-      ) : (
-        <>
-          {errorStatus ? (
-            <TittleStyled>Something went wrong!</TittleStyled>
-          ) : undefined}
-
-          <TittleStyled>Burger price: {totalPrice} ₴ </TittleStyled>
-          <OrderListStyled>
-            {burgerComponents.map((element) => {
+    <Dialog open={isOpen} onClose={handleClose} fullWidth={true} maxWidth="md">
+      <DialogContent>
+        {orderCreateStatus ? (
+          <OrderSuccess>
+            {"Your order is accepted. Wait for the call."}
+          </OrderSuccess>
+        ) : (
+          <>
+            <ModalTitle>Order</ModalTitle>
+            {Object.keys(copyOrderIngredient).map((product) => {
               return (
-                <OrderItemStyled
-                  key={element[0] + "_Order_Item"}
-                  name={element[0]}
-                >
-                  <Image name={element[0]} />
-                  <OrderSpan>{element[0] + ":"}</OrderSpan>
-                  <OrderSpan>{element[1]}</OrderSpan>
-                </OrderItemStyled>
+                <>
+                  <OrderProduct>
+                    <Image name={product} />
+                    <span>{copyOrderIngredient[product]}</span>
+                  </OrderProduct>
+                </>
               );
             })}
-          </OrderListStyled>
-          <Formik
-            initialValues={{
-              name: "",
-              email: "",
-              phone: "",
-              address: "",
-              isFast: false,
-            }}
-            validationSchema={SignupSchema}
-            onSubmit={(values) => handleOrder(values)}
-          >
-            {({ isSubmitting }) => (
-              <FormStyled>
-                <LabelStyled>
-                  <FieldStyled
-                    validate={validationRules.validateName}
-                    type="text"
-                    name="name"
-                    placeholder={"name"}
-                  />
-                </LabelStyled>
-                <ErrorMessage name="name" />
-                <br />
+            <Formik
+              initialValues={{
+                name: "",
+                email: "",
+                phone: "",
+                address: "",
+              }}
+              validationSchema={SignupSchema}
+              onSubmit={(values) => handleOrder(values)}
+            >
+              {({ isSubmitting }) => (
+                <FormStyled>
+                  <LabelStyled>
+                    <FieldStyled
+                      validate={validationRules.validateName}
+                      type="text"
+                      name="name"
+                      placeholder={"name"}
+                    />
+                  </LabelStyled>
+                  <ErrorMessage name="name" />
 
-                <LabelStyled>
-                  <FieldStyled
-                    validate={validationRules.validateEmail}
-                    type="email"
-                    name="email"
-                    placeholder={"email"}
-                  />
-                </LabelStyled>
-                <ErrorMessage name="email" />
-                <br />
-                <LabelStyled>
-                  <FieldStyled
-                    validate={validationRules.validatePhone}
-                    type="text"
-                    name="phone"
-                    placeholder={"phone"}
-                  />
-                </LabelStyled>
-                <ErrorMessage name="phone" />
-                <br />
-                <LabelStyled>
-                  <FieldStyled
-                    validate={validationRules.validateAddress}
-                    type="text"
-                    name="address"
-                    placeholder="address"
-                  />
-                </LabelStyled>
-                <ErrorMessage name="address" />
-                <br />
-                <br />
-                <Stack direction="row" spacing={2}>
-                  <Button style={style} variant="contained" type="submit">
-                    Order
-                  </Button>
-                  <Button
-                    style={style}
-                    variant="contained"
-                    onClick={orderWindowClesed}
-                  >
-                    Cancel
-                  </Button>
-                </Stack>
-              </FormStyled>
-            )}
-          </Formik>
-        </>
-      )}
-    </WrapperStyled>
+                  <LabelStyled>
+                    <FieldStyled
+                      validate={validationRules.validateEmail}
+                      type="email"
+                      name="email"
+                      placeholder={"email"}
+                    />
+                  </LabelStyled>
+                  <ErrorMessage name="email" />
+
+                  <LabelStyled>
+                    <FieldStyled
+                      validate={validationRules.validatePhone}
+                      type="text"
+                      name="phone"
+                      placeholder={"phone"}
+                    />
+                  </LabelStyled>
+                  <ErrorMessage name="phone" />
+
+                  <LabelStyled>
+                    <FieldStyled
+                      validate={validationRules.validateAddress}
+                      type="text"
+                      name="address"
+                      placeholder={"address"}
+                    />
+                  </LabelStyled>
+                  <ErrorMessage name="address" />
+                  <br />
+                  <FinalPriceStyled>
+                    <FinalPriceSpanStyled>
+                      {"Total Price"}:
+                    </FinalPriceSpanStyled>
+                    <FinalPriceSpanStyled> $ {orderPrice}</FinalPriceSpanStyled>
+                  </FinalPriceStyled>
+
+                  <DialogActions>
+                    {loading ? (
+                      <CircularProgress color="success" />
+                    ) : (
+                      <>
+                        <Button
+                          style={{
+                            height: 40,
+                          }}
+                          color="error"
+                          onClick={handleClose}
+                          variant="outlined"
+                        >
+                          {"cancel"}
+                        </Button>
+                        <Button
+                          style={{
+                            height: 40,
+                          }}
+                          color="success"
+                          type="submit"
+                          variant="outlined"
+                        >
+                          {"order"}
+                        </Button>
+                      </>
+                    )}
+                  </DialogActions>
+                </FormStyled>
+              )}
+            </Formik>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
-const StatusBox = styled.div({
-  padding: "20px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-});
-const WrapperStyled = styled.div({
-  width: "400px",
 
-  background: "#fff",
-  margin: "10px 20px 20px",
+const ModalTitle = styled.h2({
+  fontFamily: "Inter",
+  fontStyle: "normal",
+  fontWeight: "700",
+  fontSize: "36px",
+  textAlign: "center",
 });
-const TittleStyled = styled.h3({
-  color: "#FF6B0B",
-  margin: "5px",
-});
-const OrderListStyled = styled.ul({
-  listStyle: "none",
-  padding: 0,
-  margin: "5px",
-});
-const OrderItemStyled = styled.li({
-  padding: "5px",
+
+const OrderProduct = styled.div({
   display: "flex",
   justifyContent: "space-between",
-  borderBottom: "1px solid #aaa",
   alignItems: "center",
+  gap: "15px",
+  margin: "5px 20px",
+  padding: "5px",
+  border: "5px double lightgrey",
 });
 
 const LabelStyled = styled.label({
-  width: "100%",
+  width: "95%",
   display: "flex",
   alignItems: "center",
 });
 
 const FieldStyled = styled(Field)({
   fontFamily: "Monsterrat Medium",
-  height: "50px",
+  height: "40px",
   border: "none",
   borderBottom: "2px solid lightgrey",
   textIndent: "10px",
@@ -223,5 +215,20 @@ const FormStyled = styled(Form)({
   alignItems: "center",
   justifyContent: "center",
 });
-const OrderSpan = styled.span({});
+
+const FinalPriceStyled = styled.h2({
+  width: "95%",
+  display: "flex",
+  justifyContent: "space-between",
+});
+
+const FinalPriceSpanStyled = styled.span({
+  display: "flex",
+  alignItems: "center",
+});
+
+const OrderSuccess = styled.h3({
+  textAlign: "center",
+});
+
 export default OrderDetails;

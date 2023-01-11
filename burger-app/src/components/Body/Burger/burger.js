@@ -1,6 +1,27 @@
 import styled from "styled-components";
+import { useState } from "react";
 
-const Burger = ({ ingredientAddingOrder, orderPrice }) => {
+import OrderDetails from "../../OtherComponents/OrderDeteils/orderDeteils";
+
+const Burger = ({ ingredientAddingOrder, orderPrice, clearAll }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const orderIngredient = [...ingredientAddingOrder];
+
+  const copyOrderIngredient = orderIngredient.reduce((allNames, name) => {
+    const currNumber = allNames[name] ?? 0;
+    return {
+      ...allNames,
+      [name]: currNumber + 1,
+    };
+  }, {});
+
   return (
     <BurgerWrapper>
       <BurgerTitle>Burger price: {orderPrice} ₴</BurgerTitle>
@@ -29,7 +50,19 @@ const Burger = ({ ingredientAddingOrder, orderPrice }) => {
         src={require("../../../Assets/images//bottom_bun.png")}
         alt="Bottom bun"
       />
-      <Checkout className="checkout">Checkout</Checkout>
+      <Checkout
+        className="checkout"
+        onClick={+orderPrice > 1 ? handleOpen : undefined}
+      >
+        Checkout
+      </Checkout>
+      <OrderDetails
+        isOpen={open}
+        orderPrice={orderPrice}
+        handleClose={handleClose}
+        copyOrderIngredient={copyOrderIngredient}
+        clearAll={clearAll}
+      />
     </BurgerWrapper>
   );
 };
@@ -51,7 +84,10 @@ const BurgerWrapper = styled.section({
   flexDirection: "column",
   alignItems: "center",
 });
+
 const BurgerTitle = styled.h2({
+  fontFamily: "Inter",
+  fontStyle: "normal",
   fontWeight: "600",
   fontSize: "36px",
   margin: "20px 0",
