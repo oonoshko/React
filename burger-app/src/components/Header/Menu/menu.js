@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MenuItem from "./MenuItem/menuItem";
 
 const Menu = () => {
-  const menuItems = ["Home", "Orders", "FAQ"];
+  const menuItems = ["Home", "Orders", "Contact", "FAQ"];
   return (
     <MenuStyled>
       {menuItems.map((item, index) => (
@@ -15,7 +15,7 @@ const Menu = () => {
 const MenuStyled = styled.ul({
   display: "flex",
   alignItems: "center",
-  flexBasis: "20%",
+  flexBasis: "22%",
   listStyle: "none",
   gap: "15px",
   fontFamily: "Inter",

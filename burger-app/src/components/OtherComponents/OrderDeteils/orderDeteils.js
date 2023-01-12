@@ -25,10 +25,6 @@ const OrderDetails = ({
   const [loading, setLoading] = useState(false);
   const [orderCreateStatus, setOrderCreateStatus] = useState(false);
 
-  const burgerIngredients = Object.entries(orderPrice).filter(
-    (product) => product[1] > 0
-  );
-
   const handleOrder = async (data) => {
     const {
       name: orderName,
@@ -36,12 +32,13 @@ const OrderDetails = ({
       email: orderEmail,
       address: orderAddress,
     } = data;
+
     const orderData = {
       orderName,
       orderPhone,
       orderEmail,
       orderAddress,
-      orderProducts: Object.fromEntries(burgerIngredients),
+      orderProducts: copyOrderIngredient,
       orderPrice,
     };
 

@@ -5,6 +5,7 @@ import OrderDetails from "../../OtherComponents/OrderDeteils/orderDeteils";
 
 const Burger = ({ ingredientAddingOrder, orderPrice, clearAll }) => {
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -50,19 +51,23 @@ const Burger = ({ ingredientAddingOrder, orderPrice, clearAll }) => {
         src={require("../../../Assets/images//bottom_bun.png")}
         alt="Bottom bun"
       />
-      <Checkout
-        className="checkout"
-        onClick={+orderPrice > 1 ? handleOpen : undefined}
-      >
-        Checkout
-      </Checkout>
-      <OrderDetails
-        isOpen={open}
-        orderPrice={orderPrice}
-        handleClose={handleClose}
-        copyOrderIngredient={copyOrderIngredient}
-        clearAll={clearAll}
-      />
+      {handleOpen && (
+        <>
+          <Checkout
+            className="checkout"
+            onClick={+orderPrice > 1 ? handleOpen : undefined}
+          >
+            Checkout
+          </Checkout>
+          <OrderDetails
+            isOpen={open}
+            orderPrice={orderPrice}
+            handleClose={handleClose}
+            copyOrderIngredient={copyOrderIngredient}
+            clearAll={clearAll}
+          />
+        </>
+      )}
     </BurgerWrapper>
   );
 };
